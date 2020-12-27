@@ -38,17 +38,12 @@ int main()
         while (1)
         {
             int fd0 = open("client1", O_WRONLY);
-            printf("1\n");
             fgets(input, sizeof(input), stdin);
             write(fd0, input, sizeof(input));
-
-            printf("2\n");
 
             int fd1 = open("server1", O_RDONLY);
             read(fd1, input, sizeof(input));
             printf("%s\n", input);
-
-            printf("3\n");
         }
     }
 

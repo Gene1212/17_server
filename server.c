@@ -34,8 +34,6 @@ int main()
             int fd1 = open("client1", O_RDONLY);
             read(fd1, input, sizeof(input));
 
-            printf("1\n");
-
             char *p = input;
             while (*p)
             {
@@ -44,9 +42,7 @@ int main()
             }
 
             int fd0 = open("server1", O_WRONLY);
-            printf("2\n");
             write(fd0, input, sizeof(input));
-            printf("3\n");
         }
     }
 
