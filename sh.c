@@ -34,5 +34,5 @@ int run_server()
     remove("serverpipe");
     remove("clientpipe");
 
-    return 0;
+    return 1;
 }

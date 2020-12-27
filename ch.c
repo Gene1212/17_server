@@ -27,5 +27,5 @@ int run_client()
 
     write(fd0, y, sizeof(y));
 
-    return 0;
+    return 1;
 }

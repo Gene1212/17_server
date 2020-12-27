@@ -16,6 +16,10 @@ static void sighandler(int signo)
     {
         remove("server1");
         remove("client1");
+        int fd0 = open("client1", O_WRONLY);
+        int fd1 = open("server1", O_RDONLY);
+        close(fd0);
+        close(fd1);
         exit(0);
     }
 }
@@ -23,22 +27,29 @@ static void sighandler(int signo)
 int main()
 {
     char input[100];
-    run_client();
     signal(SIGINT, sighandler);
-    printf("\n");
-    printf("Type in your input\n");
 
-    while (1)
+    if (run_client() == 1)
     {
-        int fd0 = open("client1", O_WRONLY);
-        fgets(input, sizeof(input), stdin);
-        write(fd0, input, sizeof(input));
-        close(fd0);
+        sleep(1);
+        printf("\n");
+        printf("Type in your input\n");
 
-        int fd1 = open("server1", O_RDONLY);
-        read(fd1, input, sizeof(input));
-        printf("%s\n", input);
-        close(fd1);
+        while (1)
+        {
+            int fd0 = open("client1", O_WRONLY);
+            printf("1\n");
+            fgets(input, sizeof(input), stdin);
+            write(fd0, input, sizeof(input));
+
+            printf("2\n");
+
+            int fd1 = open("server1", O_RDONLY);
+            read(fd1, input, sizeof(input));
+            printf("%s\n", input);
+
+            printf("3\n");
+        }
     }
 
     return 0;

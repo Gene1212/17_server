@@ -22,30 +22,35 @@ static void sighandler(int signo)
 int main()
 {
     char input[100];
-    run_server();
-    mkfifo("server1", 0777);
-    mkfifo("client1", 0777);
-
     signal(SIGINT, sighandler);
-    //int c = 1;
 
-    while (1)
+    if (run_server() == 1)
     {
-        int fd1 = open("client1", O_RDONLY);
-        read(fd1, input, sizeof(input));
-        close(fd1);
+        mkfifo("server1", 0777);
+        mkfifo("client1", 0777);
 
-        char *p = input;
-        while (*p)
+        while (1)
         {
-            (*p += 1);
-            p++;
-        }
+            int fd1 = open("client1", O_RDONLY);
+            read(fd1, input, sizeof(input));
 
-        int fd0 = open("server1", O_WRONLY);
-        write(fd0, input, sizeof(input));
-        close(fd0);
+            printf("1\n");
+
+            char *p = input;
+            while (*p)
+            {
+                (*p += 1);
+                p++;
+            }
+
+            int fd0 = open("server1", O_WRONLY);
+            printf("2\n");
+            write(fd0, input, sizeof(input));
+            printf("3\n");
+        }
     }
+
+    //int c = 1;
 
     return 0;
 }
