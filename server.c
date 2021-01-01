@@ -19,6 +19,7 @@ static void sighandler(int signo)
         exit(0);
     }
 }
+
 int main()
 {
     char input[100];
@@ -26,23 +27,33 @@ int main()
 
     if (run_server() == 1)
     {
+
         mkfifo("server1", 0777);
         mkfifo("client1", 0777);
 
         while (1)
         {
-            int fd1 = open("client1", O_RDONLY);
-            read(fd1, input, sizeof(input));
 
-            char *p = input;
-            while (*p)
+            int fd1 = open("client1", O_RDONLY);
+            if (read(fd1, input, sizeof(input)) > 0)
             {
-                (*p += 1);
-                p++;
+                char *p = input;
+                while (*p)
+                {
+                    (*p += 1);
+                    p++;
+                }
+
+                int fd0 = open("server1", O_WRONLY);
+                write(fd0, input, sizeof(input));
             }
 
-            int fd0 = open("server1", O_WRONLY);
-            write(fd0, input, sizeof(input));
+            else
+            {
+                printf("\n");
+                printf("\n");
+                run_server();
+            }
         }
     }
 

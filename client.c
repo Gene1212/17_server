@@ -14,8 +14,6 @@ static void sighandler(int signo)
 {
     if (signo == SIGINT)
     {
-        remove("server1");
-        remove("client1");
         int fd0 = open("client1", O_WRONLY);
         int fd1 = open("server1", O_RDONLY);
         close(fd0);
@@ -31,7 +29,6 @@ int main()
 
     if (run_client() == 1)
     {
-        sleep(1);
         printf("\n");
         printf("Type in your input\n");
 
